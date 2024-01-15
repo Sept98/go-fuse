@@ -57,7 +57,8 @@ func mountDirect(mountPoint string, opts *MountOptions, ready chan<- error) (fd 
 		r = append(r, "allow_other")
 	}
 
-	err = syscall.Mount(opts.FsName, mountPoint, "fuse."+opts.Name, opts.DirectMountFlags, strings.Join(r, ","))
+	// err = syscall.Mount(opts.FsName, mountPoint, "fuse."+opts.Name, opts.DirectMountFlags, strings.Join(r, ","))
+	err = syscall.Mount(opts.FsName, mountPoint, "ext."+opts.Name, opts.DirectMountFlags, strings.Join(r, ","))
 	if err != nil {
 		syscall.Close(fd)
 		return
