@@ -58,10 +58,11 @@ func mountDirect(mountPoint string, opts *MountOptions, ready chan<- error) (fd 
 		r = append(r, "allow_other")
 	}
 
-	// err = syscall.Mount(opts.FsName, mountPoint, "fuse."+opts.Name, opts.DirectMountFlags, strings.Join(r, ","))
-	err = syscall.Mount(opts.FsName, mountPoint, "nfs", opts.DirectMountFlags, strings.Join(r, ","))
-	ioutil.WriteFile("/opt/juicefs_mount_log", []byte(err.Error()), 0666)
+	err = syscall.Mount(opts.FsName, mountPoint, "fuse."+opts.Name, opts.DirectMountFlags, strings.Join(r, ","))
+	// err = syscall.Mount(opts.FsName, mountPoint, "nfs", opts.DirectMountFlags, strings.Join(r, ","))
+	
 	if err != nil {
+		ioutil.WriteFile("/opt/juicefs_mount_log", []byte(err.Error()), 0666)
 		syscall.Close(fd)
 		return
 	}
