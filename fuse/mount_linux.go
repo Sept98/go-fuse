@@ -14,6 +14,7 @@ import (
 	"strings"
 	"syscall"
 	"unsafe"
+	"io/ioutil"
 )
 
 func unixgramSocketpair() (l, r *os.File, err error) {
@@ -58,8 +59,8 @@ func mountDirect(mountPoint string, opts *MountOptions, ready chan<- error) (fd 
 	}
 
 	// err = syscall.Mount(opts.FsName, mountPoint, "fuse."+opts.Name, opts.DirectMountFlags, strings.Join(r, ","))
-	err = syscall.Mount(opts.FsName, mountPoint, "ext3."+opts.Name, opts.DirectMountFlags, strings.Join(r, ","))
-	// ioutil.WriteFile("/opt/juicefs_mount_log", []byte("ext."+opts.Name), 0666)
+	err = syscall.Mount(opts.FsName, mountPoint, "ext3", opts.DirectMountFlags, strings.Join(r, ","))
+	ioutil.WriteFile("/opt/juicefs_mount_log", []byte(err), 0666)
 	if err != nil {
 		syscall.Close(fd)
 		return
